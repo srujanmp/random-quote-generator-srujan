@@ -4,7 +4,10 @@ let app = express();
 let mongoose = require('mongoose');
 require('dotenv').config();
 let bodyParser = require('body-parser');
-app.use(express.static(__dirname+'/src'))  // for stylesheets to work
+app.use('/src',express.static(__dirname+'/src'));
+app.engine('html',require('ejs').renderFile);
+app.set('view engine','html');
+
 mongoose.connect(process.env.MONGO_URI);
 let max=34;let min=1;
 let quoteSchema = new mongoose.Schema({   //created quote schema
@@ -18,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false })); //to get input from html bo
 app.get('/',async(req,res)=>{
     let randno=Math.floor(Math.random() * (max - min + 1)) + min;
     let getquote=await quote.findOne({ no: randno});
-    res.send(getquote.quote);
+    res.render(__dirname+'/index.html',{quote:getquote.quote});
 })
 
 
