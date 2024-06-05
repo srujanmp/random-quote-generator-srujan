@@ -22,7 +22,13 @@ app.get('/',async(req,res)=>{
     let randno=Math.floor(Math.random() * (max - min + 1)) + min;
     let getquote=await quote.findOne({ no: randno});
     res.render(__dirname+'/index.html',{quote:getquote.quote});
-})
+});
+
+app.get('/json',async(req,res)=>{
+    let randno=Math.floor(Math.random() * (max - min + 1)) + min;
+    let getquote=await quote.findOne({ no: randno});
+    res.json({quote:getquote.quote});
+});
 
 
 
